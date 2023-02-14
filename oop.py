@@ -1,12 +1,11 @@
-# we will learn basics about creating and Instantiating classes
-# we will learn about Inheritance,
-# class and Instance variables , class methods and static methods.
-
-# data and functions associated with specific class
-# those are called attributes and methods
-# and you hear a lot about them in pythonic course
-
 import datetime
+
+""" 
+we will learn basics about creating and Instantiating classes
+we will learn about Inheritance, class and Instance variables , class methods and static methods.
+data and functions associated with specific class those are called attributes and methods
+and you hear a lot about them in pythonic course 
+"""
 
 
 class Employee:
@@ -60,7 +59,6 @@ class Employee:
         return 'Employee full name : {} {}'.format(self.first, self.last)
         # 'Employee full name : {} {}'.format(emp_1.first, emp_1.last) we have replaced emp1_1 with self
 
-
     '''
     Lets replace the below code and pull out 1.05 as it is being accessed by all the class instances 
     and make it class variable   
@@ -68,9 +66,9 @@ class Employee:
             self.pay = self.pay * 1.04
     '''
     '''
-        when we create methods within a class they receive the instance as their first argument
-        by convention it is called self
-        '''
+    when we create methods within a class they receive the instance as their first argument
+    by convention it is called self
+    '''
 
     def apply_raise(self):
         self.pay = self.pay * Employee.raise_amount # or self.raise_amount if required at instance level
@@ -86,9 +84,10 @@ class Employee:
 
     @classmethod   # Here we are using it as alternative constructor as it's returning an instance
     def from_string(cls, emp_str):
-        first, last,pay = emp_str.split("-")
+        first, last, pay = emp_str.split("-")
         return cls(first, last, pay)
 
+    # above we don't want to parse this string everytime Instead lets create alternate constructor
     # real world example of alternative constructor is datetime.py
 
     '''
@@ -99,8 +98,7 @@ class Employee:
     3. Static method take no argument, 
     
     Static methods just behave like regular functions but have some kind of logical
-     connection to the class so they are part of the class definition
-    
+    connection to the class so they are part of the class definition
     '''
 
     @staticmethod
@@ -109,13 +107,69 @@ class Employee:
             return False
         return True
 
+# By simply inheriting the parent class child class has inherited all the parent functionality
+
+
+class Developer(Employee): # put class name  we want to inherit in the brackets
+    raise_amount = 1.10
+    # now if we want to add extra attribute say "prog language" for the child class we can write the below code
+
+    ''' 
+    def __init__(self, first, last, pay, prog_lang):
+            self.first = first  # this is equal to emp1.first = first
+            self.last = last
+            self.pay = pay
+            self.email = first + '.' + last + '@company.com'
+            self.prog_lang = prog_lang 
+    ''' # or
+    def __init__(self,first, last, pay, prog_lang):
+        super().__init__(first, last, pay)  # in order to handle the employee first , last and pay
+        # Employee.__init__(self, first, last, pay)
+        ''' both invoke super method and let that super class handle its attributes '''
+        self.prog_lang = prog_lang
+
+
+class Manager(Employee):
+
+    def __init__(self, first, last, pay, employees = None):
+        super().__init__(first, last, pay)
+        if employees is None:
+            self.employees = []
+        self.employees = employees
+
+    def add_employee(self, emp):
+        if emp not in self.employees:
+            self.employees.append(emp)
+
+    def remove_employee(self, emp):
+        if emp in self.employees:
+            self.employees.remove(emp)
+
+    def print_employees(self):
+        for emp in self.employees:
+            print("---> ",emp.fullname())
+# even without any declaration the Developer class will have all the attributes of the parent class
+
 
 emp_1 = Employee('Corey','Schafer',50000) # we can leave out self adn just pass the fields
 emp_2 = Employee('Test','User', 60000)
 
 my_date = datetime.date(2017,7,11)
 
+dev_1 = Developer('Corey', 'Schafer', 50000, 'Python')
+dev_2 = Developer('Test','Employee',600000,'Java')
+
+# print(help(Developer))
 print("Is it a weekday : ", Employee.is_workday(my_date))
+
+print("dev_1 is : ",dev_1.first)
+print("dev_1 is : ",dev_1.prog_lang)
+
+mgr_1 = Manager('Sue', 'Smith', 90000, [dev_1])
+
+mgr_1.add_employee("mary jane")
+
+print(mgr_1.pay)
 
 '''
 ny the above code below code can be deleted reduced 
@@ -167,7 +221,7 @@ print(emp_1.__dict__)  # printing the name space of emp_1
 # result  {'first': 'Corey', 'last': 'Schafer', 'pay': 52000.0, 'email': 'Corey.Schafer@company.com'}
 
 print(Employee.__dict__)
-# result
+# observe the above print result
 '''
 {'__module__': '__main__',  ####### 'raise_amount': 1.04, #####
  '__init__': <function Employee.__init__ at 0x00000185169EB550>, 
@@ -200,10 +254,14 @@ employee_2 = "Steve-Smith-50000"
 employee_3 = "Jane-Doe-90000"
 
 first, last, pay = employee_1.split("-")
+new_emp_1 = Employee(first,last,pay) # then creating an object, not the best way so refer to cls method
 
-new_emp_1 = Employee(first,last,pay) # and then create an object
 
-# we dont want to parse this string everytime Instead lets create alternate constructor
+# Python provides 2 main built in methods
+
+print("Manager is subclass of Developer - (T/F) : ", issubclass(Manager, Developer))
+print("mgr_1 is an Instance of Manager  - (T/F) : ",isinstance(mgr_1, Manager))
+
 
 
 
