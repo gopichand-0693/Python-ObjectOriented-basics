@@ -6,6 +6,9 @@
 # those are called attributes and methods
 # and you hear a lot about them in pythonic course
 
+import datetime
+
+
 class Employee:
     pass
 
@@ -53,7 +56,6 @@ class Employee:
 
         Employee.num_of_emps += 1
 
-
     def fullname(self): # takes object (self) is taken as first argument by default
         return 'Employee full name : {} {}'.format(self.first, self.last)
         # 'Employee full name : {} {}'.format(emp_1.first, emp_1.last) we have replaced emp1_1 with self
@@ -65,22 +67,55 @@ class Employee:
       def apply_raise(self):
             self.pay = self.pay * 1.04
     '''
+    '''
+        when we create methods within a class they receive the instance as their first argument
+        by convention it is called self
+        '''
 
     def apply_raise(self):
         self.pay = self.pay * Employee.raise_amount # or self.raise_amount if required at instance level
         # if it is not accessed like  Employee.raise_amount or self.amount it will give error
 
+    @classmethod
+    def set_raise_amt(cls, amount): # just like reg methods we used self , here we use cls
+        cls.raise_amount = amount
 
+    # class methods can be used as alternative contructor
+    # Example the data that we get in a concatenated firstname , lastname , salary a
+    # Now this string ca be split to individual argument and return an instance of the class
 
+    @classmethod   # Here we are using it as alternative constructor as it's returning an instance
+    def from_string(cls, emp_str):
+        first, last,pay = emp_str.split("-")
+        return cls(first, last, pay)
 
-'''
-when we create methods within a class they receive the instance as their first argument
-by convention it is called self
-'''
+    # real world example of alternative constructor is datetime.py
+
+    '''
+    now that we have looked at cls methods 
+    let's look at static methods
+    1. Instance/regular methods take  self af first method 
+    2. Class methods take cls as first parameter
+    3. Static method take no argument, 
+    
+    Static methods just behave like regular functions but have some kind of logical
+     connection to the class so they are part of the class definition
+    
+    '''
+
+    @staticmethod
+    def is_workday(day):  # they don't take instance (self) / class (cls) as first argument
+        if day.weekday() == 5 or day.weekday() == 6:
+            return False
+        return True
+
 
 emp_1 = Employee('Corey','Schafer',50000) # we can leave out self adn just pass the fields
 emp_2 = Employee('Test','User', 60000)
 
+my_date = datetime.date(2017,7,11)
+
+print("Is it a weekday : ", Employee.is_workday(my_date))
 
 '''
 ny the above code below code can be deleted reduced 
@@ -148,6 +183,35 @@ print(Employee.num_of_emps)
 
 
 # Now that we have class variables doe we have class methods ? - short ans Yes
+
+'''Now we will be learning Class methods , Static methods, Regular methods
+   Regular methods take self / instance as the first parameter
+   how to make methods that takle class as first argument ? 
+   now to do that we are going to use decorator called class method 
+   @classmethod ''' # implementation line 72
+
+
+# class methods can be used as alternative contructor
+# Example the data that we get in a concatenated firstname , lastname , salary a
+# Now this string ca be split to individual argument and return an instance of the class
+
+employee_1 = "John-Doe-70000"
+employee_2 = "Steve-Smith-50000"
+employee_3 = "Jane-Doe-90000"
+
+first, last, pay = employee_1.split("-")
+
+new_emp_1 = Employee(first,last,pay) # and then create an object
+
+# we dont want to parse this string everytime Instead lets create alternate constructor
+
+
+
+
+
+
+
+
 
 
 
