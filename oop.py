@@ -263,7 +263,7 @@ print("Manager is subclass of Developer - (T/F) : ", issubclass(Manager, Develop
 print("mgr_1 is an Instance of Manager  - (T/F) : ",isinstance(mgr_1, Manager))
 
 
-
+# real world example of sub classing refer to package   exceptions.py
 
 
 
