@@ -7,7 +7,6 @@ data and functions associated with specific class those are called attributes an
 and you hear a lot about them in pythonic course 
 """
 
-
 class Employee:
     pass
 
