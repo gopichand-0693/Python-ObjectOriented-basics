@@ -2,7 +2,7 @@
 # In this module we will look into few algorithms
 
 """
-Sorting algorithms
+Searching algorithms
 """
 
 #  Basic linear search
